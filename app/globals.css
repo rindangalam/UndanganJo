@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fcf8f9;
+  --foreground: #1b1b1c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Rosewood Manor palette */
+  --color-rosewood-ink: #4a2c2a;
+  --color-linen-bg: #f9f6f1;
+  --color-champagne-surface: #e5d3c0;
+  --color-charcoal-text: #1a1a1b;
+  --color-surface: #fcf8f9;
+  --color-surface-low: #f6f3f4;
+  --color-surface-container: #f0edee;
+  --color-surface-high: #eae7e8;
+  --color-surface-highest: #e5e2e3;
+  --color-onsurface: #1b1b1c;
+  --color-onsurface-variant: #504443;
+  --color-outline: #827472;
+  --color-outline-variant: #d4c3c1;
+  --color-primary: #321716;
+  --color-onprimary: #ffffff;
+  --color-primary-container: #4a2c2a;
+  --color-secondary: #695c4d;
+  --color-secondary-container: #f2e0cc;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-onerror-container: #93000a;
+  --color-inverse-surface: #303031;
+  --color-inverse-onsurface: #f3f0f1;
+
+  --font-serif: var(--font-eb-garamond), Georgia, serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--surface);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
