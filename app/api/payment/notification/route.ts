@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { asArray } from "@/lib/utils";
 import {
   verifyMidtransSignature,
   isSuccessStatus,
@@ -58,10 +59,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "amount mismatch" }, { status: 400 });
   }
 
-  const invitation =
-    Array.isArray(order.invitation) && order.invitation.length > 0
-      ? order.invitation[0]
-      : null;
+  const invitation = asArray(order.invitation)[0] ?? null;
 
   // 3) Update informasi gateway (selalu, sebagai jejak rekonsiliasi).
   await admin.from("orders").update({
