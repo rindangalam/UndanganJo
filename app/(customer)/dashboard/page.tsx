@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { reconcilePendingOrder } from "@/lib/payment";
 import { asArray } from "@/lib/utils";
 import DashboardSidebar from "@/components/dashboard-sidebar";
 import CheckoutButton from "./checkout-button";
@@ -27,6 +29,33 @@ const STATUS_META: Record<string, { label: string; className: string }> = {
   },
 };
 
+// Order yang berumur di bawah ini (menit) masih dianggap dalam window wajar bayar,
+// tidak perlu dicek ke Midtrans pada setiap load dashboard (hindari spam status API).
+const STALE_MINUTES = 15;
+
+/**
+ * Rekonsiliasi order gateway pending milik user yang sudah lewat batas umur.
+ * Menanyakan status ke Midtrans dan menerapkan settlement bila sukses.
+ * Dilakukan saat dashboard di-load sebagai lapisan cadangan webhook (B).
+ */
+async function reconcileStaleGatewayOrders(customerId: string) {
+  const admin = createAdminClient();
+  const cutoff = new Date(Date.now() - STALE_MINUTES * 60 * 1000).toISOString();
+
+  const { data: orders } = await admin
+    .from("orders")
+    .select("id, amount, gateway_order_id")
+    .eq("customer_id", customerId)
+    .eq("payment_method", "gateway")
+    .eq("status", "pending")
+    .not("gateway_order_id", "is", null)
+    .lt("updated_at", cutoff);
+
+  for (const order of orders ?? []) {
+    await reconcilePendingOrder(admin, order.gateway_order_id, order.amount);
+  }
+}
+
 export default async function DashboardPage() {
   const supabase = await createClient();
 
@@ -43,6 +72,11 @@ export default async function DashboardPage() {
     )
     .eq("customer_id", user.id)
     .order("created_at", { ascending: false });
+
+  // Lapisan rekonsiliasi (B): reconcile order gateway pending yang sudah lewat
+  // window wajar (>15 menit) terhadap Midtrans. Menyelesaikan kasus webhook
+  // tidak datang, tanpa bergantung tindakan user.
+  await reconcileStaleGatewayOrders(user.id);
 
   const ids = (invitations ?? []).map((i) => i.id);
 

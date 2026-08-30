@@ -24,6 +24,38 @@ declare global {
   }
 }
 
+type PollResult = "paid" | "pending" | "error";
+
+/**
+ * Polling status pembayaran (D): setelah Snap selesai, tanya route server
+ * /api/payment/status yang sekaligus merekonsiliasi order terhadap Midtrans.
+ * Mengembalikan "paid" begitu order terdeteksi lunas.
+ */
+async function pollPaymentStatus(
+  invitationId: string,
+  attempts = 10,
+  intervalMs = 3000
+): Promise<PollResult> {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(
+        `/api/payment/status?invitation_id=${encodeURIComponent(invitationId)}`
+      );
+      const data = (await res.json().catch(() => ({}))) as {
+        status?: string;
+        error?: string;
+      };
+      if (data.status === "paid") return "paid";
+      if (data.status === "failed") return "pending";
+      if (data.error) return "pending";
+    } catch {
+      // Jaringan gagal — coba lagi pada iterasi berikutnya.
+    }
+    await new Promise((r) => setTimeout(r, intervalMs));
+  }
+  return "pending";
+}
+
 function loadSnapScript(): Promise<void> {
   return new Promise((resolve, reject) => {
     if (window.snap) {
@@ -47,9 +79,7 @@ function loadSnapScript(): Promise<void> {
       reject(new Error("Gagal memuat SDK pembayaran. Periksa Client Key."));
     document.head.appendChild(script);
   });
-}
-
-export default function CheckoutButton({
+}export default function CheckoutButton({
   invitationId,
   label = "Bayar Sekarang",
   className,
@@ -87,14 +117,21 @@ export default function CheckoutButton({
       try {
         await loadSnapScript();
         window.snap?.pay(res.token, {
-          onSuccess: () => {
-            setPaid(true);
+          onSuccess: async () => {
+            // Bayar berhasil ditandai Snap — konfirmasi via polling + rekonsiliasi.
+            const result = await pollPaymentStatus(invitationId);
             setBusy(false);
+            if (result === "paid") {
+              setPaid(true);
+            }
             router.refresh();
           },
           onPending: () => {
-            setBusy(false);
-            router.refresh();
+            void pollPaymentStatus(invitationId).then((result) => {
+              setBusy(false);
+              if (result === "paid") setPaid(true);
+              router.refresh();
+            });
           },
           onError: () => {
             setBusy(false);

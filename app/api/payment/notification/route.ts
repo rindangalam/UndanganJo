@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { asArray } from "@/lib/utils";
+import { settleOrderByGatewayId } from "@/lib/payment";
 import {
   verifyMidtransSignature,
-  isSuccessStatus,
-  isFailureStatus,
   type MidtransNotification,
 } from "@/lib/midtrans";
 
@@ -31,8 +29,6 @@ export async function POST(request: Request) {
   }
 
   const orderId = payload.order_id;
-  const transactionId = payload.transaction_id ?? null;
-  const transactionStatus = payload.transaction_status;
 
   if (!orderId) {
     return NextResponse.json({ error: "missing order_id" }, { status: 400 });
@@ -40,11 +36,10 @@ export async function POST(request: Request) {
 
   const admin = createAdminClient();
 
+  // 2) Ambil order & bandingkan nominal (anti-tamper) SEBELUM menerapkan settlement.
   const { data: order } = await admin
     .from("orders")
-    .select(
-      "id, amount, status, invitation_id, invitation:invitations(id, status)"
-    )
+    .select("amount")
     .eq("gateway_order_id", orderId)
     .maybeSingle();
 
@@ -53,53 +48,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "order not found" }, { status: 404 });
   }
 
-  // 2) Kantongi amount dari notifikasi & bandingkan dengan nominal order (anti-tamper).
   const gross = parseAmount(payload.gross_amount);
   if (gross === null || gross !== order.amount) {
     return NextResponse.json({ error: "amount mismatch" }, { status: 400 });
   }
 
-  const invitation = asArray(order.invitation)[0] ?? null;
+  // 3) Terapkan settlement via logika bersama (idempotent + auto-publish).
+  const result = await settleOrderByGatewayId(admin, orderId, {
+    transactionId: payload.transaction_id,
+    transactionStatus: payload.transaction_status,
+  });
 
-  // 3) Update informasi gateway (selalu, sebagai jejak rekonsiliasi).
-  await admin.from("orders").update({
-    gateway_name: "midtrans",
-    gateway_transaction_id: transactionId,
-    payment_status_gateway: transactionStatus ?? null,
-  }).eq("id", order.id);
-
-  // 4) Idempotency: order sudah lunas -> jangan diproses ulang / downgrade.
-  if (order.status === "paid") {
-    return NextResponse.json({ ok: true, already: true });
+  if (result.status === "not_found") {
+    return NextResponse.json({ error: "order not found" }, { status: 404 });
   }
-
-  if (isSuccessStatus(transactionStatus)) {
-    const { error: updErr } = await admin
-      .from("orders")
-      .update({ status: "paid" })
-      .eq("id", order.id);
-    if (updErr) {
-      return NextResponse.json({ error: updErr.message }, { status: 500 });
-    }
-
-    // 5) Auto-publish undangan terkait (FR-G9 berlaku sama untuk jalur gateway).
-    if (invitation && invitation.status !== "published") {
-      await admin
-        .from("invitations")
-        .update({ status: "published" })
-        .eq("id", invitation.id);
-    }
-    return NextResponse.json({ ok: true, status: "paid" });
+  if (result.status === "error") {
+    return NextResponse.json({ error: result.error }, { status: 500 });
   }
-
-  if (isFailureStatus(transactionStatus)) {
-    await admin
-      .from("orders")
-      .update({ status: "failed" })
-      .eq("id", order.id);
-    return NextResponse.json({ ok: true, status: "failed" });
+  if (result.already) {
+    return NextResponse.json({ ok: true, already: true, status: "paid" });
   }
-
-  // Status lain (pending/challenge/authorize) — biarkan order pending.
-  return NextResponse.json({ ok: true, status: transactionStatus ?? "pending" });
+  return NextResponse.json({ ok: true, status: result.status });
 }
