@@ -215,28 +215,19 @@ export default function Home() {
         </section>
 
         {/* Features */}
-        <section
-          id="features"
-          className="mx-auto max-w-[1440px] px-8 py-20"
-        >
-          <div className="mb-12 max-w-2xl">
-            <span className="mb-2 block text-label-sm uppercase tracking-widest text-rosewood-ink/60">
-              Why UndanganJo
-            </span>
-            <h2 className="font-serif text-3xl font-medium text-rosewood-ink md:text-[32px]">
+        <section id="features" className="mx-auto max-w-[1440px] px-8 py-24">
+          <div className="mb-14 max-w-2xl">
+            <h2 className="font-serif text-4xl font-medium leading-tight text-sastra-ink md:text-[44px]">
               Everything you need for a beautiful invitation
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-x-12 divide-y divide-sastra-hairline border-y border-sastra-hairline md:grid-cols-2 md:divide-x">
             {features.map((f) => (
-              <div
-                key={f.title}
-                className="rounded-xl border border-champagne-surface bg-linen-bg p-6"
-              >
-                <h3 className="font-serif text-xl font-medium text-rosewood-ink">
+              <div key={f.title} className="py-8 pr-6">
+                <h3 className="font-serif text-2xl font-medium text-sastra-ink">
                   {f.title}
                 </h3>
-                <p className="mt-2 text-body-md text-onsurface-variant">
+                <p className="mt-2 max-w-sm text-body-md leading-relaxed text-sastra-dim">
                   {f.desc}
                 </p>
               </div>
