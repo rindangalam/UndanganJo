@@ -129,15 +129,14 @@ export default function Home() {
       <SiteHeader />
       <main className="pt-[80px]">
         {/* Hero */}
-        <section className="mx-auto flex max-w-[1440px] flex-col items-center gap-14 px-8 py-16 lg:grid lg:grid-cols-12 lg:items-center">
-          <div className="z-10 flex flex-col items-start gap-6 lg:col-span-5">
-            <h1 className="font-serif text-[36px] font-medium leading-tight text-rosewood-ink md:text-[48px] md:leading-[1.1]">
-              Crafting <br />
-              <span className="italic text-rosewood-ink/80">Timeless</span>{" "}
-              <br />
+        <section className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-12 px-8 py-20 lg:grid-cols-12">
+          <div className="flex flex-col items-start gap-6 lg:col-span-5">
+            <h1 className="font-serif text-[40px] font-medium leading-[1.05] text-sastra-ink md:text-[56px]">
+              Crafting{" "}
+              <span className="italic text-sastra-ink-soft">Timeless</span>{" "}
               Digital Invitations
             </h1>
-            <p className="max-w-md text-lg text-rosewood-ink/70">
+            <p className="max-w-md text-lg leading-relaxed text-sastra-dim">
               Elevate your celebration with premium, editorial-style digital
               invitations designed for the modern couple. Intimate, beautiful,
               and effortless.
@@ -145,39 +144,27 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/dashboard/new"
-                className="rounded-xl bg-rosewood-ink px-7 py-3 text-center text-label-sm font-semibold uppercase tracking-wider text-linen-bg transition hover:bg-rosewood-ink/90"
+                className="rounded-full bg-sastra-ink-soft px-7 py-3 text-center text-label-sm font-semibold uppercase tracking-wider text-sastra-surface transition hover:bg-sastra-ink"
               >
                 Buat Undangan
               </Link>
               <Link
                 href="/#themes"
-                className="rounded-xl border border-rosewood-ink px-7 py-3 text-center text-label-sm font-semibold uppercase tracking-wider text-rosewood-ink transition hover:bg-champagne-surface"
+                className="rounded-full border border-sastra-ink px-7 py-3 text-center text-label-sm font-semibold uppercase tracking-wider text-sastra-ink transition hover:bg-sastra-paper"
               >
                 Lihat Tema
               </Link>
             </div>
           </div>
-          <div className="relative w-full lg:col-span-7">
-            <div className="overflow-hidden rounded-xl">
+          <div className="lg:col-span-7">
+            <div className="overflow-hidden">
               <Image
                 src="/images/hero-couple.jpg"
                 alt="Pasangan elegan"
                 width={1280}
                 height={1024}
-                className="h-[420px] w-full object-cover lg:h-[520px]"
+                className="h-[420px] w-full object-cover lg:h-[560px]"
               />
-            </div>
-            <div className="absolute -bottom-6 -left-4 w-44 -rotate-3 rounded-xl border border-champagne-surface bg-linen-bg p-3 shadow-sm md:-left-10 md:w-56">
-              <Image
-                src="/images/stationery.jpg"
-                alt="Detail stationery"
-                width={400}
-                height={300}
-                className="mb-2 h-28 w-full rounded object-cover"
-              />
-              <p className="text-center font-semibold text-label-sm uppercase tracking-widest text-rosewood-ink/60">
-                The Details
-              </p>
             </div>
           </div>
         </section>
