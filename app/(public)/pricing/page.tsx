@@ -54,29 +54,29 @@ function PricingCard({
 }: (typeof plans)[number]) {
   return (
     <div
-      className={`relative flex flex-col justify-between rounded-xl border bg-white p-8 ${
-        popular ? "border-rosewood-ink shadow-sm" : "border-champagne-surface"
+      className={`relative flex flex-col justify-between rounded-2xl border bg-sastra-surface p-8 ${
+        popular ? "border-sastra-ink-soft shadow-sm" : "border-sastra-hairline"
       }`}
     >
       {popular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-rosewood-ink px-3 py-1 text-label-sm font-semibold uppercase tracking-wider text-linen-bg">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sastra-ink-soft px-3 py-1 text-label-sm font-semibold uppercase tracking-wider text-sastra-surface">
           Most Popular
         </span>
       )}
       <div>
-        <h3 className="font-serif text-2xl font-medium text-rosewood-ink">
+        <h3 className="font-serif text-2xl font-medium text-sastra-ink">
           {name}
         </h3>
-        <p className="mt-2 text-3xl font-semibold text-rosewood-ink">
+        <p className="mt-2 text-3xl font-semibold text-sastra-ink">
           {price}
         </p>
         <ul className="mt-6 space-y-3">
           {features.map((f) => (
             <li
               key={f}
-              className="flex items-center gap-2.5 text-body-md text-onsurface-variant"
+              className="flex items-center gap-2.5 text-body-md text-sastra-dim"
             >
-              <IconCheck className="h-4 w-4 text-rosewood-ink" />
+              <IconCheck className="h-4 w-4 text-sastra-ink-soft" />
               {f}
             </li>
           ))}
@@ -84,10 +84,10 @@ function PricingCard({
       </div>
       <Link
         href="/dashboard/new"
-        className={`mt-8 w-full rounded-lg px-4 py-3 text-center text-label-sm font-semibold uppercase tracking-wider transition ${
+        className={`mt-8 w-full rounded-2xl px-4 py-3 text-center text-label-sm font-semibold uppercase tracking-wider transition ${
           popular
-            ? "bg-rosewood-ink text-linen-bg hover:bg-rosewood-ink/90"
-            : "border border-rosewood-ink text-rosewood-ink hover:bg-champagne-surface"
+            ? "bg-sastra-ink-soft text-sastra-surface hover:bg-sastra-ink"
+            : "border border-sastra-ink text-sastra-ink hover:bg-sastra-paper"
         }`}
       >
         Select {name}
@@ -102,10 +102,10 @@ export default function PricingPage() {
       <SiteHeader />
       <main className="pt-[80px]">
         <section className="mx-auto max-w-[1440px] px-8 py-20 text-center">
-          <h1 className="font-serif text-[36px] font-medium text-rosewood-ink md:text-[48px]">
+          <h1 className="font-serif text-[36px] font-medium text-sastra-ink md:text-[48px]">
             Simple, transparent pricing
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-body-md text-onsurface-variant">
+          <p className="mx-auto mt-4 max-w-2xl text-body-md text-sastra-dim">
             Choose the perfect plan for your special day. No hidden fees, just
             beautiful digital invitations crafted with love.
           </p>
@@ -116,11 +116,11 @@ export default function PricingPage() {
               <PricingCard key={p.name} {...p} />
             ))}
           </div>
-          <div className="mx-auto mt-14 max-w-2xl rounded-xl border border-champagne-surface bg-linen-bg p-8 text-center">
-            <h3 className="font-serif text-2xl font-medium text-rosewood-ink">
+          <div className="mx-auto mt-14 max-w-2xl rounded-2xl border border-sastra-hairline bg-sastra-paper p-8 text-center">
+            <h3 className="font-serif text-2xl font-medium text-sastra-ink">
               Need help deciding?
             </h3>
-            <p className="mx-auto mt-2 max-w-md text-body-md text-onsurface-variant">
+            <p className="mx-auto mt-2 max-w-md text-body-md text-sastra-dim">
               Prefer to order with the help of our team? We are ready to assist
               you via WhatsApp to create your perfect invitation.
             </p>
@@ -128,7 +128,7 @@ export default function PricingPage() {
               href={waLink(waOrderMessage())}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-rosewood-ink px-6 py-3 text-label-sm font-semibold uppercase tracking-wider text-linen-bg transition hover:bg-rosewood-ink/90"
+              className="mt-5 inline-flex items-center gap-2 rounded-2xl bg-sastra-ink-soft px-6 py-3 text-label-sm font-semibold uppercase tracking-wider text-sastra-surface transition hover:bg-sastra-ink"
             >
               <IconWhatsApp className="h-4 w-4" />
               Pesan via WhatsApp
