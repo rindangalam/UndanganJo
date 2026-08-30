@@ -34,6 +34,14 @@
   --color-inverse-surface: #303031;
   --color-inverse-onsurface: #f3f0f1;
 
+  /* Sastra palette (ink & ivory editorial) */
+  --color-sastra-paper: #f7f5f0;
+  --color-sastra-surface: #fbfaf7;
+  --color-sastra-ink: #161612;
+  --color-sastra-ink-soft: #4a5b4f;
+  --color-sastra-hairline: #e4e0d6;
+  --color-sastra-dim: #8d8a80;
+
   --font-serif: var(--font-eb-garamond), Georgia, serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
