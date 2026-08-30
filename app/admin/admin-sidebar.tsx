@@ -13,7 +13,7 @@ export type AdminSection = "overview" | "invitations" | "orders" | "settings" | 
 const NAV: { id: AdminSection; label: string; href: string; icon: typeof IconDashboard }[] = [
   { id: "invitations", label: "Invitations", href: "/admin/invitations", icon: IconInvitations },
   { id: "orders", label: "Orders", href: "/admin", icon: IconOrders },
-  { id: "overview", label: "Overview", href: "/admin", icon: IconDashboard },
+  { id: "overview", label: "Overview", href: "/admin/overview", icon: IconDashboard },
   { id: "settings", label: "Settings", href: "/admin/settings", icon: IconSettings },
   { id: "profile", label: "Profile", href: "/admin", icon: IconPerson },
 ];

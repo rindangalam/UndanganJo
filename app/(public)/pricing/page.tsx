@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { IconCheck, IconWhatsApp } from "@/components/icons";
+import { waLink, waOrderMessage } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Paket & Harga",
@@ -124,7 +125,9 @@ export default function PricingPage() {
               you via WhatsApp to create your perfect invitation.
             </p>
             <a
-              href="https://wa.me/"
+              href={waLink(waOrderMessage())}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-rosewood-ink px-6 py-3 text-label-sm font-semibold uppercase tracking-wider text-linen-bg transition hover:bg-rosewood-ink/90"
             >
               <IconWhatsApp className="h-4 w-4" />

@@ -183,3 +183,49 @@ Total estimasi: kurang lebih 5–6 minggu untuk tim kecil/solo developer. Sesuai
 
 - Sprint ini disusun berurutan karena tiap sprint bergantung pada fondasi sprint sebelumnya (mis. Sprint 6 memakai ulang builder dari Sprint 2). Kalau perlu paralelisasi antar developer, pastikan dependency ini tetap dihormati.
 - Kalau ada perubahan scope PRD di tengah jalan, sprint yang terdampak perlu direvisi bersamaan dengan `prompt.md` supaya kedua dokumen tetap sinkron.
+
+---
+
+## Catatan Go-Live Payment (Production) — Sprint 4
+
+Status saat ini: integrasi Midtrans sudah terverifikasi **end-to-end di environment Sandbox** (order `pending`→`paid`, undangan → `published`, webhook otomatis **Completed**). Go-live ke Production **ditunda** atas keputusan pengguna (aktivitas go-live belum boleh dieksekusi sebelum konfirmasi).
+
+Agar Production siap, item berikut **wajib** dikerjakan saat go-live (bukan di sprint berjalan):
+
+1. **Rotate kredensial Midtrans Production** yang pernah ter-expose (jangan pakai key lama).
+2. Di environment Vercel production (atau VPS saat self-host):
+   - Set `MIDTRANS_IS_PRODUCTION=true` dan `NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION=true`.
+   - Ganti `MIDTRANS_SERVER_KEY` & `NEXT_PUBLIC_MIDTRANS_CLIENT_KEY` menjadi pasangan **Production** (bukan sandbox).
+3. Di dashboard Midtrans **Production** (`dashboard.midtrans.com`):
+   - Set **Payment Notification URL** → `https://undangan-jo.vercel.app/api/payment/notification`.
+   - Set **Snap Finish URL** & **Error Payment URL** → `https://undangan-jo.vercel.app/dashboard`.
+   - Verifikasi tombol "Test notification URL" menjadi **Tested** (menandakan signature server-key Production cocok).
+4. Uji ulang alur pembayaran nyata di Production sebelum mengarahkan pengguna sungguhan.
+
+Catatan: pengaturan di atas untuk environment Sandbox (`dashboard.sandbox.midtrans.com`) sudah disetel dan terverifikasi tersimpan.
+
+---
+
+## Catatan Status Sprint 5 & 6 — Selesai & Terverifikasi
+
+Status Sprint 5 (Admin Panel Inti) dan Sprint 6 (Jalur Admin-Assisted) **selesai dan lolos uji end-to-end** di sandbox.
+
+**Sprint 5 (G1–G6):**
+- G1 login admin terpisah (`isAdminUser` + guard + `proxy.ts` + RLS `is_admin()`).
+- G2 daftar order + filter, G3 daftar undangan lintas customer, G4 CRUD tema, G5 CRUD paket.
+- G6 statistik ringkas → halaman baru `/admin/overview`.
+
+**Bug regresi (Sprint 4 → 5) ditemukan & diperbaiki:** tabel order `/admin` sempat menampilkan 0 order walau DB berisi 4. Penyebab: join `customer:profiles(full_name)` ambigu karena `orders` kini punya 2 FK ke `profiles` (`customer_id` + `confirmed_by`). Diperbaiki dengan `profiles!orders_customer_id_fkey`. Setelah fix, daftar order tampil benar.
+
+**Sprint 6 (A4, C8, G7–G9):**
+- G7 buat undangan manual (customer_id null, `created_by_admin`), G8 order manual + tandai lunas (`confirmed_by`), G9 order lunas → undangan otomatis `published` (terverifikasi via DB & UI).
+- Builder admin benar-benar **reuse** komponen `InvitationEditor` dari Sprint 2 (`app/admin/invitations/[id]/edit/page.tsx` mengimpor dari `app/(customer)/dashboard/[id]/edit/invitation-editor`), bukan duplikasi.
+- RLS hanya admin yang bisa insert/update undangan `customer_id` kosong (kombinasi policy owner `auth.uid() = customer_id` + admin `is_admin()`).
+
+**Fitur baru — Galeri `/tema` (deliverable A4 yang sebelumnya belum ada):**
+- Sebelumnya hanya ada preview `/tema/modern-noir`; tidak ada galeri tema & tombol WhatsApp, dan `wa.me/` di landing/pricing masih kosong.
+- Dibuat `app/(public)/tema/page.tsx` — galeri dinamis 3 tema aktif dari DB, tiap tema punya tombol "Pesan via WhatsApp" (prefill nama tema) dan "Buat Sendiri" → `/dashboard/new`.
+- Helper `lib/whatsapp.ts` (`waNumber`, `waLink`, `waOrderMessage`) membaca nomor admin dari env `NEXT_PUBLIC_WA_NUMBER`; dipakai juga memperbaiki link `wa.me/` kosong di landing (`/`) dan `/pricing`.
+- Nav "Themes" di `components/site-header.tsx` kini menuju `/tema`.
+
+**Catatan Sprint 7 (QA) lanjutan:** verifikasi keamanan kredensial (service role key / payment gateway tidak ter-expose ke client) dan uji RLS lintas peran belum dilakukan menyeluruh.

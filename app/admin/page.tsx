@@ -74,7 +74,7 @@ export default async function AdminPage() {
   const { data: rawOrders } = await supabase
     .from("orders")
     .select(
-      "id, amount, status, payment_method, created_at, package:packages(name), invitation:invitations(groom_name, bride_name, customer_name), customer:profiles(full_name)"
+      "id, amount, status, payment_method, created_at, package:packages(name), invitation:invitations(groom_name, bride_name, customer_name), customer:profiles!orders_customer_id_fkey(full_name)"
     )
     .order("created_at", { ascending: false });
 

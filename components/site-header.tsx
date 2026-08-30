@@ -12,7 +12,7 @@ export default function SiteHeader() {
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link
-            href="/#themes"
+            href="/tema"
             className="text-body-md text-rosewood-ink/70 transition-colors hover:text-rosewood-ink"
           >
             Themes
