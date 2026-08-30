@@ -170,43 +170,44 @@ export default function Home() {
         </section>
 
         {/* Theme Showcase */}
-        <section
-          id="themes"
-          className="border-y border-champagne-surface bg-linen-bg px-8 py-20"
-        >
+        <section id="themes" className="border-y border-sastra-hairline bg-sastra-surface px-8 py-24">
           <div className="mx-auto max-w-[1440px]">
-            <div className="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-              <div>
-                <span className="mb-2 block text-label-sm uppercase tracking-widest text-rosewood-ink/60">
-                  Curated Collection
-                </span>
-                <h2 className="font-serif text-3xl font-medium text-rosewood-ink md:text-[32px]">
-                  Theme Showcase
-                </h2>
-              </div>
+            <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <h2 className="max-w-md font-serif text-4xl font-medium leading-tight text-sastra-ink md:text-[44px]">
+                Temukan tema yang berbicara
+              </h2>
               <Link
                 href="/pricing"
-                className="border-b border-rosewood-ink pb-1 text-body-md text-rosewood-ink transition hover:text-rosewood-ink/80"
+                className="border-b border-sastra-ink pb-1 text-body-md text-sastra-ink transition hover:border-sastra-ink-soft hover:text-sastra-ink-soft"
               >
-                View All Themes
+                Lihat Semua Tema
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {themes.map((t) => (
-                <div key={t.name} className="group cursor-pointer">
-                  <div className="mb-3 overflow-hidden rounded-lg border border-champagne-surface">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+              {themes.map((t, i) => (
+                <div
+                  key={t.name}
+                  className={`group cursor-pointer overflow-hidden ${
+                    i === 0
+                      ? "md:col-span-3 md:row-span-2"
+                      : "md:col-span-2"
+                  }`}
+                >
+                  <div className="mb-3 overflow-hidden">
                     <Image
                       src={t.img}
                       alt={t.name}
                       width={600}
                       height={800}
-                      className="h-[400px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                        i === 0 ? "h-[560px]" : "h-[270px]"
+                      }`}
                     />
                   </div>
-                  <h3 className="font-serif text-xl font-medium text-rosewood-ink">
+                  <h3 className="font-serif text-xl font-medium text-sastra-ink">
                     {t.name}
                   </h3>
-                  <p className="text-body-md text-rosewood-ink/70">{t.desc}</p>
+                  <p className="text-body-md text-sastra-dim">{t.desc}</p>
                 </div>
               ))}
             </div>
