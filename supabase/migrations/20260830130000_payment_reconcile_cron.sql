@@ -24,9 +24,10 @@ insert into public.cron_settings (key, value)
 values ('reconcile_url', 'https://undangan-jo.vercel.app/api/cron/reconcile')
 on conflict (key) do nothing;
 
--- Batasi akses tabel konfigurasi: hanya boleh dibaca/ditulis via fungsi definer,
--- bukan oleh peran public/anonymous.
-revoke all on public.cron_settings from public, anon, authenticated, service_role;
+-- Batasi akses tabel konfigurasi: jangan diakses public/anonymous/authenticated.
+-- service_role dibiarkan agar secret bisa di-set via REST (server-only), karena
+-- role ini sudah trusted & melewati RLS. Fungsi cron_reconcile membaca via definer.
+revoke all on public.cron_settings from public, anon, authenticated;
 
 -- 3) Fungsi yang memanggil endpoint reconcile via pg_net.
 create or replace function public.cron_reconcile()
