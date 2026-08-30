@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { asArray } from "@/lib/utils";
 import {
   createSnapTransaction,
   midtransConfigured,
@@ -44,10 +45,7 @@ export async function createCheckout(
     return { ok: false, error: "Undangan tidak ditemukan." };
   }
 
-  const pkg =
-    Array.isArray(invitation.package) && invitation.package.length > 0
-      ? invitation.package[0]
-      : null;
+  const pkg = asArray(invitation.package)[0];
   if (!invitation.package_id || !pkg) {
     return { ok: false, error: "Undangan belum memilih paket." };
   }

@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { asArray } from "@/lib/utils";
 import DashboardSidebar from "@/components/dashboard-sidebar";
+import CheckoutButton from "./checkout-button";
 import {
   IconMail,
   IconHeart,
@@ -36,7 +38,9 @@ export default async function DashboardPage() {
 
   const { data: invitations } = await supabase
     .from("invitations")
-    .select("id, slug, groom_name, bride_name, status, created_at, theme_id")
+    .select(
+      "id, slug, groom_name, bride_name, status, created_at, theme_id, package_id, package:packages(id, name, price)"
+    )
     .eq("customer_id", user.id)
     .order("created_at", { ascending: false });
 
@@ -165,7 +169,44 @@ export default async function DashboardPage() {
                       /{inv.slug}
                       {createdDate ? ` · ${createdDate}` : ""}
                     </p>
-                    <div className="mt-auto flex items-center justify-end border-t border-outline-variant pt-4">
+
+                    {inv.status !== "published" && (() => {
+                      const pkg = asArray(inv.package)[0];
+                      return (
+                      <div className="mt-4 border-t border-outline-variant pt-4">
+                        {pkg ? (
+                          <div className="flex items-center justify-between gap-3">
+                            <div>
+                              <p className="text-label-sm uppercase tracking-widest text-onsurface-variant">
+                                {pkg.name}
+                              </p>
+                              <p className="font-serif text-xl font-medium text-rosewood-ink">
+                                {new Intl.NumberFormat("id-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                  maximumFractionDigits: 0,
+                                }).format(pkg.price)}
+                              </p>
+                            </div>
+                            <CheckoutButton invitationId={inv.id} />
+                          </div>
+                        ) : (
+                          <Link
+                            href={`/dashboard/${inv.id}/edit`}
+                            className="inline-block rounded border border-outline-variant px-4 py-2 text-label-sm font-semibold uppercase tracking-widest text-primary transition hover:bg-surface-variant"
+                          >
+                            Pilih Paket &amp; Bayar
+                          </Link>
+                        )}
+                      </div>
+                      );
+                    })()}
+
+                    <div
+                      className={`mt-auto flex items-center justify-end ${
+                        inv.status !== "published" ? "pt-3" : "border-t border-outline-variant pt-4"
+                      }`}
+                    >
                       <Link
                         href={`/dashboard/${inv.id}/edit`}
                         className="rounded-full p-2 text-onsurface-variant transition hover:bg-surface-variant hover:text-rosewood-ink"
