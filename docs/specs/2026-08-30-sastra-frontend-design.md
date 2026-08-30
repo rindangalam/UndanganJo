@@ -31,7 +31,7 @@ Token Rosewood lama **tetap** (dipakai dashboard/admin). Tambahkan token baru un
 | `--color-sastra-ink` | `#161612` | teks utama / judul |
 | `--color-sastra-ink-soft` | `#4a5b4f` | aksen hijau tua (satu-satunya accent) |
 | `--color-sastra-hairline` | `#e4e0d6` | border/garis tipis |
-| `--color-sastra-dim` | `#8d8a80` | teks sekunder / deskripsi |
+| `--color-sastra-dim` | `#6f6c65` | teks sekunder / deskripsi |
 
 Font: tetap pakai `EB Garamond` (display serif) + `Geist` (UI sans) yang sudah ada di
 `app/layout.tsx` & `--font-serif`/`--font-sans`. Tidak menambah font/dependency baru.
