@@ -44,8 +44,11 @@ export async function POST(request: Request) {
     .maybeSingle();
 
   if (!order) {
-    // Order tidak dikenal — jangan proses.
-    return NextResponse.json({ error: "order not found" }, { status: 404 });
+    // Order tidak dikenal (mis. test webhook Midtrans / order liar).
+    // Signature sudah diverifikasi di atas, jadi aman. Return 200 (ignore)
+    // supaya Midtrans menganggap pengiriman sukses dan berhenti retry.
+    // Order asli selalu dibuat sebelum Snap, jadi tidak ada order valid yang terlewat.
+    return NextResponse.json({ ok: true, ignored: true, reason: "order not found" });
   }
 
   const gross = parseAmount(payload.gross_amount);
