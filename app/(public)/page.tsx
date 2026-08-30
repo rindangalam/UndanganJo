@@ -129,7 +129,7 @@ export default function Home() {
       <SiteHeader />
       <main className="pt-[80px]">
         {/* Hero */}
-        <section className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-12 px-8 py-20 lg:grid-cols-12">
+        <section className="bg-sastra-paper mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-12 px-8 py-20 lg:grid-cols-12">
           <div className="flex flex-col items-start gap-6 lg:col-span-5">
             <h1 className="font-serif text-[40px] font-medium leading-[1.05] text-sastra-ink md:text-[56px]">
               Crafting{" "}
@@ -215,15 +215,20 @@ export default function Home() {
         </section>
 
         {/* Features */}
-        <section id="features" className="mx-auto max-w-[1440px] px-8 py-24">
+        <section id="features" className="bg-sastra-paper mx-auto max-w-[1440px] px-8 py-24">
           <div className="mb-14 max-w-2xl">
             <h2 className="font-serif text-4xl font-medium leading-tight text-sastra-ink md:text-[44px]">
               Everything you need for a beautiful invitation
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-x-12 divide-y divide-sastra-hairline border-y border-sastra-hairline md:grid-cols-2 md:divide-x">
-            {features.map((f) => (
-              <div key={f.title} className="py-8 pr-6">
+          <div className="grid grid-cols-1 gap-x-12 border-t border-sastra-hairline md:grid-cols-2">
+            {features.map((f, i) => (
+              <div
+                key={f.title}
+                className={`py-8 pr-6 ${
+                  i % 2 === 1 ? "md:border-l md:border-sastra-hairline md:pl-6" : ""
+                } ${i >= 2 ? "border-t border-sastra-hairline" : ""}`}
+              >
                 <h3 className="font-serif text-2xl font-medium text-sastra-ink">
                   {f.title}
                 </h3>

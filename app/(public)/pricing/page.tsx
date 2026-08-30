@@ -100,7 +100,7 @@ export default function PricingPage() {
   return (
     <>
       <SiteHeader />
-      <main className="pt-[80px]">
+      <main className="bg-sastra-paper pt-[80px]">
         <section className="mx-auto max-w-[1440px] px-8 py-20 text-center">
           <h1 className="font-serif text-[36px] font-medium text-sastra-ink md:text-[48px]">
             Simple, transparent pricing

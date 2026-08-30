@@ -29,7 +29,7 @@ export default async function TemaPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-[1280px] flex-1 px-8 py-16">
+      <main className="bg-sastra-paper mx-auto w-full max-w-[1280px] flex-1 px-8 py-16">
         <div className="max-w-2xl">
           <span className="w-max rounded border border-sastra-hairline bg-sastra-surface px-3 py-1 font-semibold text-label-sm uppercase tracking-wide text-sastra-ink">
             Galeri Tema
