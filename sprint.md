@@ -228,4 +228,27 @@ Status Sprint 5 (Admin Panel Inti) dan Sprint 6 (Jalur Admin-Assisted) **selesai
 - Helper `lib/whatsapp.ts` (`waNumber`, `waLink`, `waOrderMessage`) membaca nomor admin dari env `NEXT_PUBLIC_WA_NUMBER`; dipakai juga memperbaiki link `wa.me/` kosong di landing (`/`) dan `/pricing`.
 - Nav "Themes" di `components/site-header.tsx` kini menuju `/tema`.
 
-**Catatan Sprint 7 (QA) lanjutan:** verifikasi keamanan kredensial (service role key / payment gateway tidak ter-expose ke client) dan uji RLS lintas peran belum dilakukan menyeluruh.
+---
+
+## Catatan Status Sprint 7 — QA & Persiapan Rilis
+
+Hasil pemeriksaan QA (terverifikasi, bukan asumsi):
+
+**QA keamanan kredensial (client exposure):**
+- `SUPABASE_SERVICE_ROLE_KEY` hanya dibaca di `lib/supabase/admin.ts` (server-only); `MIDTRANS_SERVER_KEY` hanya di `lib/midtrans.ts` (server-only, `"use server"` action / route handler).
+- Scan bundle client (`.next/static/*.js`) terhadap nilai kedua key: **tidak ditemukan** — tidak ada kredensial server yang bocor ke browser. Client hanya memegang `NEXT_PUBLIC_*` & Midtrans Client Key (memang publik).
+
+**Uji RLS lintas peran (via PostgREST, penghitungan baris):**
+- anon (publik): `orders`=0, `profiles`=0, `wishes`=0; `invitations` hanya baris `published` (5/7). Service role (admin/operator): bisa baca semua (bypass RLS).
+- Konfirmasi: RLS aktif mengisolasi data sensitif; "publik hanya lihat published" (FR-D4) berlaku; hanya admin yang bisa akses undangan `customer_id` null.
+
+**Uji edge case:**
+- Webhook idempotent — `settleOrderByGatewayId` (`lib/payment.ts`) menulis audit trail lalu guard `status === "paid"` → return `already:true` tanpa efek ganda (tidak menurunkan status / tidak publish ulang). Sudah diuji e2e di Sprint 4 (webhook"Completed").
+- `customer_id` null (undangan manual admin) sudah teruji bisa diakses publik setelah published (Sprint 6).
+
+**Performa & aksesibilitas halaman publik `/[slug]` (Lighthouse mobile):**
+- Best Practices **100**, SEO **100**, CLS **0.00** (tidak ada layout shift), gzip aktif, minim render-blocking.
+- **Fix kontras**: audit menemukan `color-contrast` gagal di footer (`text-rosewood-ink/70` di `components/site-footer.tsx`). Diperbaiki ke `/80` (kontras efektif ~6.5:1, lulus WCAG AA).
+- LCP diukur di **dev server** (Fast 3G simulasi) ~3.3 s didominasi TTFB dev (~2.1 s, kompilasi on-demand) — **bukan representatif production**; pengukuran final LCP perlu diulang setelah deploy ke Vercel.
+
+**Rekomendasi rilis:** fungsional & keamanan inti **siap**; sebelum rilis publik disarankan: (1) pengukuran performa final di production, (2) go-live Midtrans Production mengikuti checklist di Catatan Sprint 4 (rotate key, set notif URL, uji nyata), (3) isi nomor WhatsApp admin asli (`NEXT_PUBLIC_WA_NUMBER`) jika belum final.

@@ -10,14 +10,14 @@ export default function SiteFooter() {
             <a
               key={label}
               href="#"
-              className="text-body-md text-rosewood-ink/70 transition-colors underline-offset-4 hover:text-rosewood-ink hover:underline"
+              className="text-body-md text-rosewood-ink/80 transition-colors underline-offset-4 hover:text-rosewood-ink hover:underline"
             >
               {label}
             </a>
           )
         )}
       </div>
-      <p className="mt-2 text-body-md text-rosewood-ink/70">
+      <p className="mt-2 text-body-md text-rosewood-ink/80">
         © 2026 UndanganJo Digital Studio. Crafted for love.
       </p>
     </footer>
