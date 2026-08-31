@@ -507,7 +507,7 @@ Extend `ThemesManager` create/edit forms with a "Key" text input and include it 
 
 - [ ] **Step 2: Wire live preview / gallery to registry (if cheap)**
 
-Where the dashboard live-preview or `/tema` gallery can cheaply call `renderTheme`, use it. If the effort grows, mark as deferred but keep the admin `key` field (which is the valuable part for catalog management).
+DONE — deferred deliberately. The dashboard live-preview and `/tema` gallery keep their existing rendering; the valuable part (admin `key` CRUD) shipped. Preview wiring can be a follow-up task if the product wants the builder to preview actual theme styles.
 
 - [ ] **Step 3: Lint + build**
 
