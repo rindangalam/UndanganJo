@@ -5,14 +5,16 @@ import {
   IconOrders,
   IconSettings,
   IconPerson,
+  IconGroup,
   IconAdd,
 } from "@/components/icons";
 
-export type AdminSection = "overview" | "invitations" | "orders" | "settings" | "profile";
+export type AdminSection = "overview" | "invitations" | "orders" | "settings" | "profile" | "guests";
 
 const NAV: { id: AdminSection; label: string; href: string; icon: typeof IconDashboard }[] = [
   { id: "invitations", label: "Invitations", href: "/admin/invitations", icon: IconInvitations },
   { id: "orders", label: "Orders", href: "/admin", icon: IconOrders },
+  { id: "guests", label: "RSVP & Ucapan", href: "/admin/guests", icon: IconGroup },
   { id: "overview", label: "Overview", href: "/admin/overview", icon: IconDashboard },
   { id: "settings", label: "Settings", href: "/admin/settings", icon: IconSettings },
   { id: "profile", label: "Profile", href: "/admin", icon: IconPerson },
