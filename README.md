@@ -11,7 +11,7 @@
 
 ---
 
-## 📋 Overview
+## Overview
 
 **UndanganJo** is a modern online wedding invitation platform that offers two flexible ordering channels to serve different customer preferences. Customers can either create invitations themselves through a self-service dashboard or get personalized assistance via WhatsApp. 
 
@@ -25,9 +25,9 @@
 
 ---
 
-## ✨ Features
+## Features
 
-### 🎨 For Customers (Couples)
+### For Customers (Couples)
 
 #### Self-Serve Channel
 - Register and login with email
@@ -50,7 +50,7 @@
 - Receive published invitation link via WhatsApp
 - Monitor RSVPs and messages
 
-### 👥 For Guests
+### For Guests
 - Open invitation link (no app installation required)
 - View event details (ceremony & reception)
 - See venue location with Google Maps integration
@@ -59,7 +59,7 @@
 - Write congratulations message in guestbook
 - View digital gift/envelope information (optional)
 
-### 🛠️ For Admin
+### For Admin
 - Manage orders from both channels (self-serve + WhatsApp)
 - Create manual invitations for WhatsApp customers
 - Process payment confirmations (gateway + manual transfer)
@@ -70,7 +70,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -82,7 +82,7 @@
 
 ---
 
-## 📋 Requirements
+## Requirements
 
 - **Node.js** >= 18
 - **npm** >= 9
@@ -91,7 +91,7 @@
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### 1. Clone Repository
 
@@ -152,57 +152,57 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 UndanganJo/
-├── app/
-│   ├── (marketing)/          # Public marketing pages
-│   │   ├── page.tsx           # Landing page
-│   │   ├── tema/              # Theme gallery
-│   │   └── demo/              # Demo invitation
-│   ├── (customer)/            # Customer dashboard (self-serve)
-│   │   ├── dashboard/
-│   │   ├── undangan/
-│   │   │   ├── buat/          # Create invitation
-│   │   │   └── [id]/          # Edit invitation
-│   │   └── pembayaran/
-│   ├── (admin)/               # Admin panel
-│   │   ├── dashboard/
-│   │   ├── pesanan/           # Orders management
-│   │   ├── undangan/          # Invitations management
-│   │   ├── tema/              # Theme management
-│   │   └── paket/             # Package management
-│   ├── (invitation)/          # Public invitation pages
-│   │   └── [slug]/            # Individual invitation view
-│   ├── api/                   # API routes
-│   │   ├── auth/
-│   │   ├── invitations/
-│   │   ├── rsvp/
-│   │   └── payment/
-│   └── layout.tsx
-├── components/
-│   ├── forms/                 # Form components
-│   ├── themes/                # Theme templates
-│   └── ui/                    # Reusable UI components
-├── lib/
-│   ├── supabase/              # Supabase client & utils
-│   └── utils.ts               # Helper functions
-├── supabase/
-│   ├── migrations/            # Database migrations
-│   └── seed.sql               # Seed data
-├── scripts/
-│   └── db-push.mjs            # Database push script
-├── public/                    # Static assets
-├── PRD-Platform-Undangan-Online.md  # Product Requirements
-├── design.md                  # Design specifications
-├── sprint.md                  # Sprint planning
-└── package.json
+ app/
+    (marketing)/          # Public marketing pages
+       page.tsx           # Landing page
+       tema/              # Theme gallery
+       demo/              # Demo invitation
+    (customer)/            # Customer dashboard (self-serve)
+       dashboard/
+       undangan/
+          buat/          # Create invitation
+          [id]/          # Edit invitation
+       pembayaran/
+    (admin)/               # Admin panel
+       dashboard/
+       pesanan/           # Orders management
+       undangan/          # Invitations management
+       tema/              # Theme management
+       paket/             # Package management
+    (invitation)/          # Public invitation pages
+       [slug]/            # Individual invitation view
+    api/                   # API routes
+       auth/
+       invitations/
+       rsvp/
+       payment/
+    layout.tsx
+ components/
+    forms/                 # Form components
+    themes/                # Theme templates
+    ui/                    # Reusable UI components
+ lib/
+    supabase/              # Supabase client & utils
+    utils.ts               # Helper functions
+ supabase/
+    migrations/            # Database migrations
+    seed.sql               # Seed data
+ scripts/
+    db-push.mjs            # Database push script
+ public/                    # Static assets
+ PRD-Platform-Undangan-Online.md  # Product Requirements
+ design.md                  # Design specifications
+ sprint.md                  # Sprint planning
+ package.json
 ```
 
 ---
 
-## 🎯 User Flows
+## User Flows
 
 ### Self-Serve Customer Flow
 1. Register/Login
@@ -245,7 +245,7 @@ UndanganJo/
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 ### Key Tables
 - `users` - Customer accounts (self-serve)
@@ -258,7 +258,7 @@ UndanganJo/
 
 ---
 
-## 💳 Payment Options
+## Payment Options
 
 ### Payment Gateway (QRIS)
 - Automatic payment processing
@@ -273,7 +273,7 @@ UndanganJo/
 
 ---
 
-## 🎨 Themes
+## Themes
 
 UndanganJo offers 2-3 pre-designed themes for MVP:
 - **Modern Minimalist** - Clean and elegant design
@@ -291,7 +291,7 @@ Each theme includes:
 
 ---
 
-## 📦 Pricing Packages (Example)
+## Pricing Packages (Example)
 
 | Package | Price | Features |
 |---------|-------|----------|
@@ -303,7 +303,7 @@ Each theme includes:
 
 ---
 
-## 🔐 Security Features
+## Security Features
 
 - **Row Level Security (RLS)** on all database tables
 - **Server-side authorization** enforcement
@@ -314,7 +314,7 @@ Each theme includes:
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
 ### Vercel Deployment
 
@@ -346,7 +346,7 @@ npm run db:push    # Push database migrations
 
 ---
 
-## 📊 Success Metrics (MVP)
+## Success Metrics (MVP)
 
 | Metric | Target |
 |--------|--------|
@@ -357,15 +357,15 @@ npm run db:push    # Push database migrations
 
 ---
 
-## 🚧 Roadmap
+## Roadmap
 
 ### MVP (Current)
-- ✅ Self-serve customer dashboard
-- ✅ WhatsApp-assisted ordering
-- ✅ Basic themes (2-3 designs)
-- ✅ RSVP and guestbook
-- ✅ Payment gateway (QRIS)
-- ✅ Manual payment confirmation
+-  Self-serve customer dashboard
+-  WhatsApp-assisted ordering
+-  Basic themes (2-3 designs)
+-  RSVP and guestbook
+-  Payment gateway (QRIS)
+-  Manual payment confirmation
 
 ### Future Enhancements
 - [ ] Lead capture form before WhatsApp
@@ -378,7 +378,7 @@ npm run db:push    # Push database migrations
 
 ---
 
-## 📝 Documentation
+## Documentation
 
 - **[PRD](PRD-Platform-Undangan-Online.md)** - Product Requirements Document
 - **[Design Specs](design.md)** - UI/UX design specifications
@@ -396,7 +396,7 @@ This is a commercial project. For internal development:
 
 ---
 
-## 📄 License
+## License
 
 Proprietary - All rights reserved
 
@@ -404,14 +404,14 @@ See [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👤 Author
+## Author
 
 **Rindang Alam Nur Muhammad**  
 GitHub: [@rindangalam](https://github.com/rindangalam)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Built with:
 - [Next.js](https://nextjs.org/) - React framework
@@ -421,7 +421,7 @@ Built with:
 
 ---
 
-## 📧 Contact
+## Contact
 
 For business inquiries or technical support:
 - **GitHub**: [@rindangalam](https://github.com/rindangalam)
