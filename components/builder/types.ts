@@ -23,6 +23,7 @@ export interface Invitation {
   gift_info: string | null;
   music_url: string | null;
   gallery_photos: string[] | null;
+  theme_key?: string | null;
   created_by_admin: boolean | null;
   customer_name: string | null;
   customer_phone: string | null;
