@@ -44,6 +44,7 @@ export interface Package {
 export interface Theme {
   id: string;
   name: string;
+  key: string | null;
   thumbnail_url: string | null;
   is_premium: boolean;
 }

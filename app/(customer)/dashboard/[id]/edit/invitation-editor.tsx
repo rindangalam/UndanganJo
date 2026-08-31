@@ -14,7 +14,8 @@ import FormDataTab from "@/components/builder/form-data";
 import FormThemeTab from "@/components/builder/form-theme";
 import FormPhotosTab from "@/components/builder/form-photos";
 import FormMusicTab from "@/components/builder/form-music";
-import { IconHeart, IconMusic, IconEdit } from "@/components/icons";
+import { IconEdit } from "@/components/icons";
+import { renderTheme, themeKeyOf } from "@/components/theme/registry";
 
 type Step = "pasangan" | "acara" | "galeri" | "cerita" | "pengaturan";
 
@@ -25,17 +26,6 @@ const STEPS: { id: Step; label: string }[] = [
   { id: "cerita", label: "Cerita" },
   { id: "pengaturan", label: "Pengaturan" },
 ];
-
-function formatDate(value: string | null) {
-  if (!value) return null;
-  const d = new Date(value);
-  if (isNaN(d.getTime())) return value;
-  return d.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
 
 export default function InvitationEditor({
   invitation: initial,
@@ -126,10 +116,9 @@ export default function InvitationEditor({
     }
   }
 
-  const couple = [invitation.groom_name, invitation.bride_name]
-    .filter(Boolean)
-    .join(" & ");
-  const akadDate = formatDate(invitation.akad_date);
+  const selectedThemeKey = themeKeyOf(
+    themes.find((t) => t.id === invitation.theme_id)?.key ?? null
+  );
 
   return (
     <div className="flex min-h-screen flex-col bg-surface">
@@ -266,45 +255,14 @@ export default function InvitationEditor({
           <p className="mb-3 text-center text-label-sm font-semibold uppercase tracking-widest text-onsurface-variant">
             Live Preview
           </p>
-          <div className="mx-auto flex h-[640px] w-[300px] flex-col overflow-hidden rounded-[36px] border-8 border-rosewood-ink bg-cover bg-center shadow-[0_20px_40px_rgba(25,24,23,0.2)]">
+          <div className="relative mx-auto h-[640px] w-[344px] overflow-hidden rounded-[36px] border-8 border-rosewood-ink shadow-[0_20px_40px_rgba(25,24,23,0.2)]">
             <div
-              className="relative flex flex-1 flex-col items-center justify-center overflow-hidden bg-rosewood-ink p-6 text-center"
-              style={{
-                backgroundImage:
-                  (invitation.gallery_photos ?? []).length > 0
-                    ? `url(${invitation.gallery_photos![0]})`
-                    : undefined,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
+              className="h-full w-full overflow-y-auto overflow-x-hidden"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-rosewood-ink/70 via-transparent to-rosewood-ink/90" />
-              <div className="relative z-10 flex flex-col items-center gap-4">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-linen-bg/80">
-                  The Wedding Of
-                </span>
-                <h3 className="font-serif text-3xl font-medium leading-tight text-linen-bg">
-                  {couple || "Nama & Pasangan"}
-                </h3>
-                {akadDate && (
-                  <p className="text-[11px] uppercase tracking-widest text-linen-bg/90">
-                    {akadDate}
-                  </p>
-                )}
-                <div className="my-1 h-px w-10 bg-champagne-surface" />
+              <div className="w-[448px]" style={{ zoom: 344 / 448 }}>
+                {renderTheme(selectedThemeKey, invitation)}
               </div>
-            </div>
-            <div className="flex items-center justify-around border-t border-outline-variant bg-linen-bg px-6 py-3">
-              <span className="flex flex-col items-center text-rosewood-ink">
-                <IconHeart className="h-5 w-5" />
-                <span className="mt-1 text-label-sm font-semibold">RSVP</span>
-              </span>
-              <span className="flex flex-col items-center text-onsurface-variant">
-                <IconMusic className="h-5 w-5" />
-                <span className="mt-1 text-label-sm font-semibold">
-                  {invitation.music_url ? "Music" : ""}
-                </span>
-              </span>
             </div>
           </div>
           <Link
