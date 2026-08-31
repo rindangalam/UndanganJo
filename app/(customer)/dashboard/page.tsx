@@ -12,6 +12,7 @@ import {
   IconSparkle,
   IconAdd,
   IconEdit,
+  IconGroup,
 } from "@/components/icons";
 
 const STATUS_META: Record<string, { label: string; className: string }> = {
@@ -237,10 +238,17 @@ export default async function DashboardPage() {
                     })()}
 
                     <div
-                      className={`mt-auto flex items-center justify-end ${
+                      className={`mt-auto flex items-center justify-end gap-1 ${
                         inv.status !== "published" ? "pt-3" : "border-t border-outline-variant pt-4"
                       }`}
                     >
+                      <Link
+                        href={`/dashboard/${inv.id}/guests`}
+                        className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-label-sm font-semibold uppercase tracking-wider text-primary transition hover:bg-surface-variant"
+                      >
+                        <IconGroup className="h-4 w-4" />
+                        RSVP &amp; Ucapan
+                      </Link>
                       <Link
                         href={`/dashboard/${inv.id}/edit`}
                         className="rounded-full p-2 text-onsurface-variant transition hover:bg-surface-variant hover:text-rosewood-ink"
