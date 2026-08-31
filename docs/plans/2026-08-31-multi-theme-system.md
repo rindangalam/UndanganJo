@@ -505,9 +505,12 @@ git commit -m "feat(theme): add theme_key to Invitation type"
 
 Extend `ThemesManager` create/edit forms with a "Key" text input and include it in the action payloads; extend the row type and admin actions to persist `key`. Validate key format `^[a-z0-9-]+$`.
 
-- [ ] **Step 2: Wire live preview / gallery to registry (if cheap)**
+- [x] **Step 2: Wire live preview / gallery to registry (if cheap)**
 
-DONE — deferred deliberately. The dashboard live-preview and `/tema` gallery keep their existing rendering; the valuable part (admin `key` CRUD) shipped. Preview wiring can be a follow-up task if the product wants the builder to preview actual theme styles.
+DONE — completed in a follow-up.
+- `invitation-editor.tsx`: live preview replaced the static Rosewood mockup with `renderTheme(selectedThemeKey, invitation)` inside a 344px phone frame (448px template scaled via CSS `zoom`), re-rendering when the chosen theme changes (commit `246ba16`).
+- `app/(public)/tema/page.tsx`: gallery cards render a live themed preview via `renderTheme` when `theme.key` is set (commit `b335ed4`).
+- Applied migration `20260831100000_multi_theme_keys.sql` to the remote dev DB via `supabase db push` so all 5 themes carry keys and the wiring works end-to-end.
 
 - [ ] **Step 3: Lint + build**
 
