@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { Invitation } from "@/components/builder/types";
 import { createClient } from "@/lib/supabase/server";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { IconWhatsApp } from "@/components/icons";
+import { renderTheme, themeKeyOf } from "@/components/theme/registry";
 import { waLink, waOrderMessage } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -15,6 +17,50 @@ export const metadata: Metadata = {
 function monogram(name: string) {
   const words = name.trim().split(/\s+/).slice(0, 2);
   return words.map((w) => w[0]?.toUpperCase()).join("");
+}
+
+const SAMPLE: Invitation = {
+  id: "sample",
+  customer_id: null,
+  package_id: null,
+  theme_id: null,
+  slug: "sample",
+  status: "published",
+  groom_name: "Raka",
+  bride_name: "Annisa",
+  akad_date: "2026-12-12",
+  akad_time: "09:00",
+  akad_location: "Masjid Agung, Semarang",
+  akad_maps_url: null,
+  reception_date: "2026-12-13",
+  reception_time: "11:00",
+  reception_location: "Hotel Gumaya, Semarang",
+  reception_maps_url: null,
+  story:
+    "Kami bertemu di sebuah pagi hujan di kampus — dan kini kami menulis bab yang paling indah bersama.",
+  gift_name: "BCA",
+  gift_account: "1234567890",
+  gift_info: "Raka & Annisa",
+  music_url: null,
+  gallery_photos: [],
+  created_by_admin: false,
+  customer_name: null,
+  customer_phone: null,
+  updated_at: null,
+};
+
+function ThemePreview({ themeKey }: { themeKey: string | null }) {
+  const key = themeKeyOf(themeKey);
+  return (
+    <div
+      className="mx-auto h-[520px] w-[280px] overflow-x-hidden overflow-y-auto"
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+    >
+      <div className="w-[448px]" style={{ zoom: 280 / 448 }}>
+        {renderTheme(key, SAMPLE)}
+      </div>
+    </div>
+  );
 }
 
 export default async function TemaPage() {
@@ -56,7 +102,9 @@ export default async function TemaPage() {
                   className="flex flex-col overflow-hidden rounded-2xl border border-sastra-hairline bg-sastra-surface"
                 >
                   <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-sastra-ink">
-                    {t.thumbnail_url ? (
+                    {t.key ? (
+                      <ThemePreview themeKey={t.key} />
+                    ) : t.thumbnail_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={t.thumbnail_url}
