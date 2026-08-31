@@ -20,12 +20,20 @@ async function getInvitation(slug: string) {
   const { data } = await query.limit(50);
 
   const published = (data ?? []).find((i) => i.status === "published");
-  if (published) return published;
+  const row = published ?? (user ? (data ?? []).find((i) => i.customer_id === user.id) : undefined);
+  if (!row) return null;
 
-  const own = (data ?? []).find((i) => i.customer_id === user?.id);
-  if (own && user) return own;
+  let themeKey: string | null = null;
+  if (row.theme_id) {
+    const { data: theme } = await supabase
+      .from("themes")
+      .select("key")
+      .eq("id", row.theme_id)
+      .maybeSingle();
+    themeKey = theme?.key ?? null;
+  }
 
-  return null;
+  return { invitation: row, themeKey };
 }
 
 export async function generateMetadata({
@@ -46,8 +54,8 @@ export default async function InvitationSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const invitation = await getInvitation(slug);
-  if (!invitation) notFound();
+  const result = await getInvitation(slug);
+  if (!result) notFound();
 
-  return <InvitationPage invitation={invitation} />;
+  return <InvitationPage invitation={result.invitation} themeKey={result.themeKey} />;
 }
