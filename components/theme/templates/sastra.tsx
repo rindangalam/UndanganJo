@@ -2,13 +2,23 @@ import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
 import { formatDisplayDate, coupleName } from "../sections";
+import Countdown from "@/components/invitation/countdown";
+import MusicPlayer from "@/components/invitation/music-player";
+import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
 
-export default function Sastra({ invitation }: { invitation: Invitation }) {
+export default function Sastra({
+  invitation,
+  preview = false,
+}: {
+  invitation: Invitation;
+  preview?: boolean;
+}) {
   const photo = (invitation.gallery_photos ?? [])[0];
   const couple = coupleName(invitation);
   const akadDate = formatDisplayDate(invitation.akad_date);
   const resepsiDate = formatDisplayDate(invitation.reception_date);
   const photos = invitation.gallery_photos ?? [];
+  const countdownTarget = invitation.akad_date ?? invitation.reception_date;
 
   return (
     <main className="mx-auto w-full max-w-md overflow-hidden bg-sastra-paper">
@@ -117,6 +127,16 @@ export default function Sastra({ invitation }: { invitation: Invitation }) {
         </section>
       )}
 
+      {!preview && (
+        <Countdown
+          targetDate={countdownTarget}
+          ink="text-sastra-ink"
+          dim="text-sastra-dim"
+          surface="bg-sastra-paper"
+          hairline="border-sastra-hairline"
+        />
+      )}
+
       {/* Story */}
       {invitation.story && (
         <section className="border-y border-sastra-hairline bg-sastra-paper px-8 py-14 text-center">
@@ -176,6 +196,19 @@ export default function Sastra({ invitation }: { invitation: Invitation }) {
         </section>
       )}
 
+      {!preview && (
+        <RsvpGuestbook
+          invitationId={invitation.id}
+          palette={{
+            accent: "bg-sastra-ink-soft text-sastra-surface",
+            ink: "text-sastra-ink",
+            dim: "text-sastra-dim",
+            surface: "bg-sastra-surface",
+            hairline: "border-sastra-hairline",
+          }}
+        />
+      )}
+
       <footer className="px-8 py-10 text-center">
         <p className="font-serif text-xl italic text-sastra-ink">
           {couple || "UndanganJo"}
@@ -187,6 +220,15 @@ export default function Sastra({ invitation }: { invitation: Invitation }) {
           Dibuat dengan <IconHeart className="inline h-3 w-3 text-sastra-ink-soft" /> oleh UndanganJo
         </p>
       </footer>
+
+      {!preview && (
+        <MusicPlayer
+          src={invitation.music_url ?? null}
+          accent="bg-sastra-ink-soft"
+          ink="text-sastra-surface"
+          surface="hover:bg-sastra-ink"
+        />
+      )}
     </main>
   );
 }

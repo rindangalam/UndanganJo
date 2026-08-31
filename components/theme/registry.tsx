@@ -15,6 +15,7 @@ export type ThemeKey =
 
 export interface ThemeTemplateProps {
   invitation: Invitation;
+  preview?: boolean;
 }
 
 export type ThemeTemplate = (props: ThemeTemplateProps) => ReactElement;
@@ -33,7 +34,7 @@ export const themeRegistry: Record<ThemeKey, ThemeTemplate> = {
   romantic: Romantic,
 };
 
-export function renderTheme(key: ThemeKey, invitation: Invitation) {
+export function renderTheme(key: ThemeKey, invitation: Invitation, preview = false) {
   const Template = themeRegistry[key] ?? Sastra;
-  return <Template invitation={invitation} />;
+  return <Template invitation={invitation} preview={preview} />;
 }

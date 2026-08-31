@@ -261,7 +261,7 @@ export default function InvitationEditor({
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               <div className="w-[448px]" style={{ zoom: 344 / 448 }}>
-                {renderTheme(selectedThemeKey, invitation)}
+                {renderTheme(selectedThemeKey, invitation, true)}
               </div>
             </div>
           </div>

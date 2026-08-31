@@ -57,7 +57,7 @@ function ThemePreview({ themeKey }: { themeKey: string | null }) {
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div className="w-[448px]" style={{ zoom: 280 / 448 }}>
-        {renderTheme(key, SAMPLE)}
+        {renderTheme(key, SAMPLE, true)}
       </div>
     </div>
   );

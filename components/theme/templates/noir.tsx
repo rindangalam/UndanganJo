@@ -2,13 +2,23 @@ import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
 import { formatDisplayDate, coupleName } from "../sections";
+import Countdown from "@/components/invitation/countdown";
+import MusicPlayer from "@/components/invitation/music-player";
+import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
 
-export default function Noir({ invitation }: { invitation: Invitation }) {
+export default function Noir({
+  invitation,
+  preview = false,
+}: {
+  invitation: Invitation;
+  preview?: boolean;
+}) {
   const photo = (invitation.gallery_photos ?? [])[0];
   const couple = coupleName(invitation);
   const akadDate = formatDisplayDate(invitation.akad_date);
   const resepsiDate = formatDisplayDate(invitation.reception_date);
   const photos = invitation.gallery_photos ?? [];
+  const countdownTarget = invitation.akad_date ?? invitation.reception_date;
 
   return (
     <main className="mx-auto w-full max-w-md overflow-hidden bg-[#111]">
@@ -117,6 +127,16 @@ export default function Noir({ invitation }: { invitation: Invitation }) {
         </section>
       )}
 
+      {!preview && (
+        <Countdown
+          targetDate={countdownTarget}
+          ink="text-[#e8e6e1]"
+          dim="text-[#9a9a94]"
+          surface="bg-[#161616]"
+          hairline="border-[#2a2a2a]"
+        />
+      )}
+
       {/* Story */}
       {invitation.story && (
         <section className="border-y border-[#2a2a2a] bg-[#161616] px-8 py-14 text-center">
@@ -176,6 +196,19 @@ export default function Noir({ invitation }: { invitation: Invitation }) {
         </section>
       )}
 
+      {!preview && (
+        <RsvpGuestbook
+          invitationId={invitation.id}
+          palette={{
+            accent: "bg-[#d4af37] text-[#111]",
+            ink: "text-[#e8e6e1]",
+            dim: "text-[#9a9a94]",
+            surface: "bg-[#161616]",
+            hairline: "border-[#2a2a2a]",
+          }}
+        />
+      )}
+
       <footer className="px-8 py-10 text-center">
         <p className="font-serif text-xl italic text-[#e8e6e1]">
           {couple || "UndanganJo"}
@@ -187,6 +220,15 @@ export default function Noir({ invitation }: { invitation: Invitation }) {
           Dibuat dengan <IconHeart className="inline h-3 w-3 text-[#d4af37]" /> oleh UndanganJo
         </p>
       </footer>
+
+      {!preview && (
+        <MusicPlayer
+          src={invitation.music_url ?? null}
+          accent="bg-[#d4af37]"
+          ink="text-[#111]"
+          surface="hover:bg-[#e6c35c]"
+        />
+      )}
     </main>
   );
 }
