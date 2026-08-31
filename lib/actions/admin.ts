@@ -172,6 +172,9 @@ export async function createTheme(
   if (!(await isAdminUser())) return { ok: false, error: "Akses admin diperlukan." };
   const name = String(formData.get("name") ?? "").trim();
   if (!name) return { ok: false, error: "Nama tema wajib diisi." };
+  const key = String(formData.get("key") ?? "").trim().toLowerCase();
+  if (!/^[a-z0-9-]+$/.test(key))
+    return { ok: false, error: "Key harus berupa huruf/angka/tanda hubung (cth: sastra, modern-noir)." };
   const thumbnail_url = String(formData.get("thumbnail_url") ?? "").trim() || null;
   const is_premium = toBool(formData.get("is_premium"), false);
   const is_active = toBool(formData.get("is_active"), true);
@@ -179,6 +182,7 @@ export async function createTheme(
   const supabase = await createClient();
   const { error } = await supabase.from("themes").insert({
     name,
+    key,
     thumbnail_url,
     is_premium,
     is_active,
@@ -196,6 +200,9 @@ export async function updateTheme(
   const id = String(formData.get("id") ?? "").trim();
   const name = String(formData.get("name") ?? "").trim();
   if (!id || !name) return { ok: false, error: "Data tidak lengkap." };
+  const key = String(formData.get("key") ?? "").trim().toLowerCase();
+  if (!/^[a-z0-9-]+$/.test(key))
+    return { ok: false, error: "Key harus berupa huruf/angka/tanda hubung (cth: sastra, modern-noir)." };
   const thumbnail_url = String(formData.get("thumbnail_url") ?? "").trim() || null;
   const is_premium = toBool(formData.get("is_premium"), false);
   const is_active = toBool(formData.get("is_active"), true);
@@ -203,7 +210,7 @@ export async function updateTheme(
   const supabase = await createClient();
   const { error } = await supabase
     .from("themes")
-    .update({ name, thumbnail_url, is_premium, is_active })
+    .update({ name, key, thumbnail_url, is_premium, is_active })
     .eq("id", id);
   if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/settings", "layout");

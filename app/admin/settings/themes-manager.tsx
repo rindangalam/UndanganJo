@@ -10,6 +10,7 @@ import {
 type ThemeRow = {
   id: string;
   name: string;
+  key: string;
   thumbnail_url: string | null;
   is_premium: boolean;
   is_active: boolean;
@@ -70,6 +71,10 @@ export default function ThemesManager({ themes }: { themes: ThemeRow[] }) {
               <input name="name" required placeholder="cth. Emerald Garden" className={INPUT} />
             </label>
             <label className="flex flex-col gap-1">
+              <span className="text-label-sm font-semibold uppercase tracking-wider text-onsurface-variant">Key</span>
+              <input name="key" required pattern="[a-z0-9-]+" placeholder="cth. sastra, modern-noir" className={INPUT} />
+            </label>
+            <label className="flex flex-col gap-1">
               <span className="text-label-sm font-semibold uppercase tracking-wider text-onsurface-variant">Thumbnail URL</span>
               <input name="thumbnail_url" placeholder="https://..." className={INPUT} />
             </label>
@@ -105,6 +110,10 @@ export default function ThemesManager({ themes }: { themes: ThemeRow[] }) {
                 <label className="flex flex-col gap-1">
                   <span className="text-label-sm font-semibold uppercase tracking-wider text-onsurface-variant">Nama</span>
                   <input name="name" required defaultValue={t.name} className={INPUT} />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-label-sm font-semibold uppercase tracking-wider text-onsurface-variant">Key</span>
+                  <input name="key" required pattern="[a-z0-9-]+" defaultValue={t.key} className={INPUT} />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-label-sm font-semibold uppercase tracking-wider text-onsurface-variant">Thumbnail URL</span>
@@ -156,6 +165,7 @@ export default function ThemesManager({ themes }: { themes: ThemeRow[] }) {
           <thead>
             <tr className="border-b border-outline-variant text-label-sm uppercase tracking-widest text-onsurface-variant">
               <th className="px-4 py-3 font-semibold">Nama</th>
+              <th className="px-4 py-3 font-semibold">Key</th>
               <th className="px-4 py-3 font-semibold">Tipe</th>
               <th className="px-4 py-3 font-semibold">Status</th>
               <th className="px-4 py-3 font-semibold text-right">Actions</th>
@@ -164,7 +174,7 @@ export default function ThemesManager({ themes }: { themes: ThemeRow[] }) {
           <tbody>
             {themes.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-onsurface-variant">
+                <td colSpan={5} className="px-4 py-10 text-center text-onsurface-variant">
                   Belum ada tema.
                 </td>
               </tr>
@@ -172,6 +182,7 @@ export default function ThemesManager({ themes }: { themes: ThemeRow[] }) {
               [...activeThemes, ...inactiveThemes].map((t) => (
                 <tr key={t.id} className="border-b border-outline-variant/60 last:border-0">
                   <td className="px-4 py-3 font-medium text-onsurface">{t.name}</td>
+                  <td className="px-4 py-3 font-mono text-sm text-onsurface-variant">{t.key}</td>
                   <td className="px-4 py-3 text-onsurface-variant">
                     {t.is_premium ? "Premium" : "Standar"}
                   </td>
