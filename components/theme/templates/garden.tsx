@@ -201,7 +201,7 @@ export default function Garden({
         headlineClass="text-[#3f5a3a]"
         bodyClass="text-[#5f6f55]"
         accentClass="bg-[#3f5a3a] text-white"
-        surfaceClass="bg-[#ffffff]"
+        surfaceClass="bg-[#eef3ea]"
         hairlineClass="border-[#dbe6d2]"
       />
 

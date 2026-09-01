@@ -201,7 +201,7 @@ export default function Terracotta({
         headlineClass="text-[#b4552d]"
         bodyClass="text-[#8a6a52]"
         accentClass="bg-[#b4552d] text-white"
-        surfaceClass="bg-[#faf3e8]"
+        surfaceClass="bg-[#f2e3cf]"
         hairlineClass="border-[#e5d2ba]"
       />
 

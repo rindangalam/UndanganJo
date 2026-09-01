@@ -205,7 +205,7 @@ export default function Romantic({
         headlineClass="text-[#c26b78]"
         bodyClass="text-[#9a6a72]"
         accentClass="bg-[#c26b78] text-white"
-        surfaceClass="bg-[#fdf3f4]"
+        surfaceClass="bg-[#f7e3e6]"
         hairlineClass="border-[#ecd6da]"
       />
 
