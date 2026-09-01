@@ -42,6 +42,8 @@ const SAMPLE: Invitation = {
   gift_account: "1234567890",
   gift_info: "Raka & Annisa",
   music_url: null,
+  livestream_url: null,
+  video_url: null,
   gallery_photos: [],
   created_by_admin: false,
   customer_name: null,
