@@ -23,6 +23,10 @@ async function getInvitation(slug: string) {
   const row = published ?? (user ? (data ?? []).find((i) => i.customer_id === user.id) : undefined);
   if (!row) return null;
 
+  if (row.status === "published") {
+    await supabase.from("invitation_views").insert({ invitation_id: row.id });
+  }
+
   let themeKey: string | null = null;
   if (row.theme_id) {
     const { data: theme } = await supabase

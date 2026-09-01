@@ -81,18 +81,32 @@ export default async function DashboardPage() {
 
   const ids = (invitations ?? []).map((i) => i.id);
 
-  const [{ data: guests }, { data: wishes }] = await Promise.all([
+  const [{ data: guests }, { data: wishes }, { data: views }] = await Promise.all([
     ids.length
       ? supabase.from("guests").select("id").in("invitation_id", ids)
       : Promise.resolve({ data: [] }),
     ids.length
       ? supabase.from("wishes").select("id").in("invitation_id", ids)
       : Promise.resolve({ data: [] }),
+    ids.length
+      ? supabase
+          .from("invitation_views")
+          .select("invitation_id")
+          .in("invitation_id", ids)
+      : Promise.resolve({ data: [] }),
   ]);
 
   const activeProjects = invitations?.length ?? 0;
   const totalRsvp = guests?.length ?? 0;
   const totalWishes = wishes?.length ?? 0;
+
+  const viewsByInvitation = (views ?? []).reduce<Record<string, number>>(
+    (acc, v) => {
+      acc[v.invitation_id] = (acc[v.invitation_id] ?? 0) + 1;
+      return acc;
+    },
+    {}
+  );
 
   const stats = [
     {
@@ -204,6 +218,13 @@ export default async function DashboardPage() {
                       /{inv.slug}
                       {createdDate ? ` · ${createdDate}` : ""}
                     </p>
+
+                    {inv.status === "published" && (
+                      <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-surface px-2.5 py-1 text-label-sm font-semibold text-onsurface-variant">
+                        <IconGroup className="h-3.5 w-3.5" />
+                        {viewsByInvitation[inv.id] ?? 0} kali dibuka
+                      </p>
+                    )}
 
                     {inv.status !== "published" && (() => {
                       const pkg = asArray(inv.package)[0];

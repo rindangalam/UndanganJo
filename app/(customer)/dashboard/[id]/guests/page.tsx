@@ -114,13 +114,23 @@ export default async function GuestsPage({
         {/* RSVP table */}
         <section className="mb-8 overflow-hidden rounded-lg border border-outline-variant bg-surface">
           <div className="border-b border-outline-variant px-5 py-4">
-            <h2 className="font-serif text-xl font-medium text-rosewood-ink">
-              Daftar RSVP
-            </h2>
-            <p className="mt-1 text-sm text-onsurface-variant">
-              {attending} hadir · {notAttending} tidak hadir · {unspecified} belum
-              konfirmasi · ~{totalGuests} orang
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="font-serif text-xl font-medium text-rosewood-ink">
+                  Daftar RSVP
+                </h2>
+                <p className="mt-1 text-sm text-onsurface-variant">
+                  {attending} hadir · {notAttending} tidak hadir · {unspecified}{" "}
+                  belum konfirmasi · ~{totalGuests} orang
+                </p>
+              </div>
+              <a
+                href={`/api/rsvp/export?invitation_id=${encodeURIComponent(id)}`}
+                className="inline-flex items-center gap-2 rounded-md bg-rosewood-ink px-4 py-2 text-label-sm font-semibold uppercase tracking-widest text-surface transition hover:opacity-90"
+              >
+                Export CSV
+              </a>
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-body-md">

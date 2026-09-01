@@ -106,6 +106,7 @@ export default async function AdminGuestsPage() {
                   <th className="px-5 py-3 text-center font-semibold">Hadir</th>
                   <th className="px-5 py-3 text-center font-semibold">Orang</th>
                   <th className="px-5 py-3 text-center font-semibold">Ucapan</th>
+                  <th className="px-5 py-3 text-center font-semibold">Export</th>
                 </tr>
               </thead>
               <tbody>
@@ -138,6 +139,14 @@ export default async function AdminGuestsPage() {
                       </td>
                       <td className="px-5 py-4 text-center text-onsurface-variant">
                         {inv.wishes.length}
+                      </td>
+                      <td className="px-5 py-4 text-center">
+                        <a
+                          href={`/api/rsvp/export?invitation_id=${encodeURIComponent(inv.id)}`}
+                          className="inline-flex items-center gap-1 rounded-md border border-outline-variant px-3 py-1.5 text-label-sm font-semibold text-rosewood-ink transition hover:bg-surface-container-low"
+                        >
+                          CSV
+                        </a>
                       </td>
                     </tr>
                   ))
