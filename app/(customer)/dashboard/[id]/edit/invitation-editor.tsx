@@ -9,11 +9,13 @@ import {
   addPhoto,
   removePhoto,
   setMusic,
+  setMedia,
 } from "@/lib/actions/invitation";
 import FormDataTab from "@/components/builder/form-data";
 import FormThemeTab from "@/components/builder/form-theme";
 import FormPhotosTab from "@/components/builder/form-photos";
 import FormMusicTab from "@/components/builder/form-music";
+import FormMediaTab from "@/components/builder/form-media";
 import { IconEdit } from "@/components/icons";
 import { renderTheme, themeKeyOf } from "@/components/theme/registry";
 
@@ -113,6 +115,23 @@ export default function InvitationEditor({
       flash("success", url ? "Musik disimpan." : "Musik dihapus.");
     } else {
       flash("error", res.error ?? "Gagal menyimpan musik.");
+    }
+  }
+
+  async function handleSaveMedia(data: {
+    livestream_url?: string | null;
+    video_url?: string | null;
+  }) {
+    const res = await setMedia(invitation.id, data);
+    if (res.ok) {
+      setInvitation((prev) => ({
+        ...prev,
+        livestream_url: data.livestream_url ?? null,
+        video_url: data.video_url ?? null,
+      }));
+      flash("success", "Media tersimpan.");
+    } else {
+      flash("error", res.error ?? "Gagal menyimpan media.");
     }
   }
 
@@ -245,6 +264,11 @@ export default function InvitationEditor({
                 invitation={invitation}
                 hasMusic={pkg?.has_music ?? false}
                 onSet={handleSetMusic}
+              />
+              <FormMediaTab
+                invitation={invitation}
+                hasVideo={pkg?.has_video ?? false}
+                onSave={handleSaveMedia}
               />
             </div>
           )}

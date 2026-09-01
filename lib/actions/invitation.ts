@@ -213,6 +213,51 @@ export async function removePhoto(
   return { ok: true };
 }
 
+export async function setMedia(
+  id: string,
+  data: { livestream_url?: string | null; video_url?: string | null }
+): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "Tidak terautentikasi." };
+  const isAdmin = await isAdminUser();
+
+  if (data.video_url || data.livestream_url) {
+    let invitationQuery = supabase
+      .from("invitations")
+      .select("package_id")
+      .eq("id", id);
+    if (!isAdmin) invitationQuery = invitationQuery.eq("customer_id", user.id);
+    const { data: pkg } = await invitationQuery.maybeSingle();
+    if (!pkg) return { ok: false, error: "Undangan tidak ditemukan." };
+
+    const { data: packageInfo } = await supabase
+      .from("packages")
+      .select("has_video")
+      .eq("id", pkg.package_id ?? "")
+      .maybeSingle();
+    if (!packageInfo?.has_video) {
+      return { ok: false, error: "Paket kamu tidak mendukung video & live streaming." };
+    }
+  }
+
+  const update: Record<string, string | null> = {};
+  if (data.livestream_url !== undefined) update.livestream_url = data.livestream_url || null;
+  if (data.video_url !== undefined) update.video_url = data.video_url || null;
+  if (Object.keys(update).length === 0) return { ok: true };
+
+  let updateQuery = supabase.from("invitations").update(update).eq("id", id);
+  if (!isAdmin) updateQuery = updateQuery.eq("customer_id", user.id);
+  const { error } = await updateQuery;
+
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath(`/dashboard/${id}/edit`, "layout");
+  return { ok: true };
+}
+
 export async function setMusic(
   id: string,
   url: string | null
