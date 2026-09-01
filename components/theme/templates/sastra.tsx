@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
-import { formatDisplayDate, coupleName } from "../sections";
+import { formatDisplayDate, coupleName, VideoSection } from "../sections";
 import Countdown from "@/components/invitation/countdown";
 import MusicPlayer from "@/components/invitation/music-player";
 import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
@@ -195,6 +195,15 @@ export default function Sastra({
           </div>
         </section>
       )}
+
+      <VideoSection
+        invitation={invitation}
+        headlineClass="text-sastra-ink"
+        bodyClass="text-sastra-dim"
+        accentClass="bg-sastra-ink-soft text-sastra-surface"
+        surfaceClass="bg-sastra-paper"
+        hairlineClass="border-sastra-hairline"
+      />
 
       {!preview && (
         <RsvpGuestbook

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
-import { formatDisplayDate, coupleName } from "../sections";
+import { formatDisplayDate, coupleName, VideoSection } from "../sections";
 import Countdown from "@/components/invitation/countdown";
 import MusicPlayer from "@/components/invitation/music-player";
 import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
@@ -199,6 +199,15 @@ export default function Romantic({
           </div>
         </section>
       )}
+
+      <VideoSection
+        invitation={invitation}
+        headlineClass="text-[#c26b78]"
+        bodyClass="text-[#9a6a72]"
+        accentClass="bg-[#c26b78] text-white"
+        surfaceClass="bg-[#fdf3f4]"
+        hairlineClass="border-[#ecd6da]"
+      />
 
       {!preview && (
         <RsvpGuestbook

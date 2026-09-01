@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
-import { formatDisplayDate, coupleName } from "../sections";
+import { formatDisplayDate, coupleName, VideoSection } from "../sections";
 import Countdown from "@/components/invitation/countdown";
 import MusicPlayer from "@/components/invitation/music-player";
 import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
@@ -195,6 +195,15 @@ export default function Terracotta({
           </div>
         </section>
       )}
+
+      <VideoSection
+        invitation={invitation}
+        headlineClass="text-[#b4552d]"
+        bodyClass="text-[#8a6a52]"
+        accentClass="bg-[#b4552d] text-white"
+        surfaceClass="bg-[#faf3e8]"
+        hairlineClass="border-[#e5d2ba]"
+      />
 
       {!preview && (
         <RsvpGuestbook

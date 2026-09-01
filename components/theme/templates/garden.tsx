@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
-import { formatDisplayDate, coupleName } from "../sections";
+import { formatDisplayDate, coupleName, VideoSection } from "../sections";
 import Countdown from "@/components/invitation/countdown";
 import MusicPlayer from "@/components/invitation/music-player";
 import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
@@ -195,6 +195,15 @@ export default function Garden({
           </div>
         </section>
       )}
+
+      <VideoSection
+        invitation={invitation}
+        headlineClass="text-[#3f5a3a]"
+        bodyClass="text-[#5f6f55]"
+        accentClass="bg-[#3f5a3a] text-white"
+        surfaceClass="bg-[#ffffff]"
+        hairlineClass="border-[#dbe6d2]"
+      />
 
       {!preview && (
         <RsvpGuestbook

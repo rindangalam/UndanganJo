@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Invitation } from "@/components/builder/types";
 import { IconHeart, IconMusic } from "@/components/icons";
-import { formatDisplayDate, coupleName } from "../sections";
+import { formatDisplayDate, coupleName, VideoSection } from "../sections";
 import Countdown from "@/components/invitation/countdown";
 import MusicPlayer from "@/components/invitation/music-player";
 import RsvpGuestbook from "@/components/invitation/rsvp-guestbook";
@@ -195,6 +195,15 @@ export default function Noir({
           </div>
         </section>
       )}
+
+      <VideoSection
+        invitation={invitation}
+        headlineClass="text-[#d4af37]"
+        bodyClass="text-[#9a9a94]"
+        accentClass="bg-[#d4af37] text-[#111]"
+        surfaceClass="bg-[#161616]"
+        hairlineClass="border-[#2a2a2a]"
+      />
 
       {!preview && (
         <RsvpGuestbook
